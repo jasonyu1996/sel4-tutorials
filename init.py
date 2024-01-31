@@ -75,11 +75,8 @@ def main():
     if not initialised:
         os.mkdir(build_dir)
 
-    result = common.init_directories(args.plat, args.tut, args.solution,
+    common.init_directories(args.plat, args.tut, args.solution,
                                      args.task, initialised, tute_dir, build_dir, sys.stdout)
-    if result.exit_code != 0:
-        logging.error("Failed to initialize build directory.")
-        return -1
     # Inform the user about any subdirectory we might have made
     print("Tutorials created in subdirectory \"%s\"." % os.path.basename(tute_dir))
     print("Build directory initialised in \"%s\"." % os.path.basename(build_dir))

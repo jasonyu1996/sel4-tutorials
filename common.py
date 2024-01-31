@@ -14,6 +14,7 @@ import logging
 PLAT_CONFIG = {
     'pc99': ['-DTUT_BOARD=pc', '-DTUT_ARCH=x86_64'],
     'zynq7000': ['-DAARCH32=TRUE', '-DTUT_BOARD=zynq7000'],
+    'riscv64': ['-DTUT_BOARD=qemu-riscv-virt', '-DTUT_ARCH=riscv64'],
 }
 
 CAMKES_VM_CONFIG = {
@@ -74,6 +75,10 @@ def _init_tute_directory(config, tut, solution, task, directory, output=None):
         arch = "x86_64"
     elif config == "zynq7000":
         arch = "aarch32"
+    elif config == "riscv64":
+        arch = "riscv64"
+        os.makedirs(os.path.join(directory, "tools"), exist_ok=True)
+        os.symlink(os.path.join(get_project_root(), "tools/opensbi"), os.path.join(directory, "tools/opensbi"), target_is_directory=True)
     with open(os.path.join(directory, ".tute_config"), 'w') as file:
         file.write("set(TUTE_COMMAND \"%s\")" %
                    ';'.join(["PYTHONPATH=${PYTHON_CAPDL_PATH}", "python3", os.path.join(get_tutorial_dir(), "template.py"),
